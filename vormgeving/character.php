@@ -8,6 +8,17 @@ include 'connection.php';
  $character = $result->fetchall();
 
 
+ function checkid($character,$item){
+
+   if ($character[$_GET['id']][$item] == NULL){
+    echo '';
+   }
+   
+   else {
+    echo "<b>".$item."</b>" .":" . $character[$_GET['id']][$item];
+   }
+ }
+
 ?>
 
 
@@ -34,8 +45,8 @@ include 'connection.php';
                     <li><span class="fa-li"><i class="fas fa-shield-alt"></i></span> <?php echo $character[$_GET['id']]['defense']; ?></li>
                 </ul>
                 <ul class="gear">
-                    <li><b>Weapon</b>:<?php echo $character[$_GET['id']]['weapon']; ?></li>
-                    <li><b>Armor</b>: <?php echo $character[$_GET['id']]['armor']; ?></li>
+                    <li><?php checkid($character, "weapon");?></li>
+                    <li><?php checkid($character, "armor");?></li>
                 </ul>
             </div>
         </div>
