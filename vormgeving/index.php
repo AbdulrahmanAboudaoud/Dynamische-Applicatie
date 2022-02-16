@@ -1,19 +1,7 @@
 <?php
-$db = 'mysql:host=localhost;dbname=dynamische_content';
-$user = 'root';
-$pass = 'mysql';
-try {
-    $conn = new PDO($db, $user, $pass);
-    echo 'u are connected';
-    
-} catch (PDOException $e) {
-    echo "failed" . $e->getMessage();
-    
-}
 
-$sql = "SELECT COUNT(id) AS total FROM `characters`;";
-$result = $conn->query($sql);
-while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+include 'connection.php';
+
 
 
 
@@ -31,35 +19,51 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 <body>
 <header>
 
+    <?php 
 
-    <h1>Alle [<?php echo $row['total']; ?>] characters uit de database</h1>
+        $sql = "SELECT * FROM `characters` ORDER BY name;";
+        $result = $conn->query($sql);
+        $character = $result->fetchall();
+
+        $order = 0;
+    ?>
+    <h1>Alle [<?php echo count($character); ?>] characters uit de database</h1>
+
+    <?php
+
+    ?>
 
 </header>
 <div id="container">
-    <a class="item" href="character.html">
+    <?php foreach ($character as  $value) { ?>
+        
+    
+    <a class="item" href="character.php?id=<?php echo $order;?>">
         <div class="left">
-            <img class="avatar" src="resources/images/bowser.jpg">
+            <img class="avatar" src="resources/images/<?php echo $character[$order]["avatar"] ?>">
         </div>
         <div class="right">
-            <h2>Bowser</h2>
+            <h2><?php echo $character[$order]["name"] ?></h2>
             <div class="stats">
                 <ul class="fa-ul">
-                    <li><span class="fa-li"><i class="fas fa-heart"></i></span> 10000</li>
-                    <li><span class="fa-li"><i class="fas fa-fist-raised"></i></span> 400</li>
-                    <li><span class="fa-li"><i class="fas fa-shield-alt"></i></span> 100</li>
+                    <li><span class="fa-li"><i class="fas fa-heart"></i></span> <?php echo $character[$order]["health"] ?></li>
+                    <li><span class="fa-li"><i class="fas fa-fist-raised"></i></span> <?php echo $character[$order]["attack"] ?></li>
+                    <li><span class="fa-li"><i class="fas fa-shield-alt"></i></span> <?php echo $character[$order]["defense"] ?></li>
                 </ul>
             </div>
         </div>
         <div class="detailButton"><i class="fas fa-search"></i> bekijk</div>
     </a>
+<?php
+$order++;
+
+ }?>
 </div>
 <footer>&copy; [Abdulrahman AbouDaoud] 2022</footer>
 </body>
 </html>
+<?php
+
+?>
 
 
-<<?php 
-
-}
-
- ?>
